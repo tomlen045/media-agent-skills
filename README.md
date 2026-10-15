@@ -6,6 +6,8 @@
 
 ![覆盖平台](https://img.shields.io/badge/平台-公众号%20·%20抖音%20·%20视频号-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Skills](https://img.shields.io/badge/skills-6%2B-8A2BE2)](#技能清单)
 
+![demo](docs/demo.png)
+
 ## 为什么不一样
 
 | 市面上的技能包 | 这一套 |

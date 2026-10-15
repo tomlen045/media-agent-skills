@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 720px; height: 900px; overflow: hidden; }
+  body {
+    font-family: "SF Mono", "Menlo", "Monaco", "PingFang SC", "Hiragino Sans GB", monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    display: flex;
+    flex-direction: column;
+  }
+  /* ── title bar ── */
+  .titlebar {
+    height: 52px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+  .dots { display: flex; gap: 8px; }
+  .dot { width: 13px; height: 13px; border-radius: 50%; }
+  .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
+  .titlebar .repo {
+    margin: 0 auto;
+    transform: translateX(-30px);
+    font-size: 14px;
+    color: #8b949e;
+    letter-spacing: 0.5px;
+  }
+  .titlebar .repo b { color: #e6edf3; font-weight: 600; }
+
+  /* ── session body ── */
+  .session {
+    flex: 1;
+    padding: 24px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 0;
+  }
+  .label {
+    font-size: 11.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6e7681;
+    margin-bottom: 10px;
+  }
+  /* user turn */
+  .user-turn {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-left: 3px solid #3fb950;
+    border-radius: 8px;
+    padding: 17px 18px;
+    font-size: 16.5px;
+    line-height: 1.6;
+  }
+  .user-turn .prompt { color: #3fb950; font-weight: 700; margin-right: 8px; }
+  .user-turn .q { color: #e6edf3; }
+  .user-turn .q .tool { color: #79c0ff; }
+
+  /* agent turn */
+  .agent-turn {
+    background: #010409;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-size: 15px;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    line-height: 1.5;
+  }
+  .step + .step { border-top: 1px dashed #21262d; }
+  .check { color: #3fb950; font-weight: 700; margin-right: 10px; font-size: 15px; }
+  .step-name { color: #e6edf3; width: 138px; flex-shrink: 0; }
+  .step-detail { color: #8b949e; flex: 1; font-size: 13.5px; }
+  .ms { color: #d2a8ff; margin-left: auto; font-size: 13px; flex-shrink: 0; padding-left: 12px; }
+
+  /* artifact card */
+  .artifact {
+    background: linear-gradient(135deg, #161b22 0%, #1a1230 100%);
+    border: 1px solid #388bfd40;
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .thumbs { display: flex; gap: 5px; flex-shrink: 0; }
+  .thumb {
+    width: 28px; height: 44px;
+    border-radius: 3px;
+    border: 1px solid #388bfd66;
+    background: linear-gradient(180deg, #1f6feb 0%, #0d419d 100%);
+    display: flex; align-items: flex-end; justify-content: center;
+    font-size: 8px; color: #cae2ff; padding-bottom: 2px;
+  }
+  .artifact .meta { font-size: 15px; color: #e6edf3; line-height: 1.7; }
+  .artifact .meta .dim { color: #8b949e; font-size: 13px; }
+  .artifact .badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    background: #238636;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+
+  /* final verdict line */
+  .verdict {
+    font-size: 16px;
+    color: #3fb950;
+    font-weight: 600;
+  }
+  .verdict .dim { color: #8b949e; font-weight: 400; }
+
+  /* ── status bar ── */
+  .statusbar {
+    height: 40px;
+    background: #161b22;
+    border-top: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    font-size: 12.5px;
+    color: #8b949e;
+    flex-shrink: 0;
+  }
+  .statusbar .live { color: #3fb950; }
+  .statusbar .live::before { content: "●"; margin-right: 6px; }
+</style>
+</head>
+<body>
+  <div class="titlebar">
+    <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+    <div class="repo"><b>media-agent-skills</b> — agent session</div>
+  </div>
+
+  <div class="session">
+    <div>
+      <div class="label">User</div>
+      <div class="user-turn">
+        <span class="prompt">$</span><span class="q">帮我用 <span class="tool">douyin-tuwen</span> 把这篇评测做成图集</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="label">Agent · douyin-tuwen 产线</div>
+      <div class="agent-turn">
+        <div class="step"><span class="check">✓</span><span class="step-name">① 拆解</span><span class="step-detail">爆款结构 4 段式</span><span class="ms">3.2s</span></div>
+        <div class="step"><span class="check">✓</span><span class="step-name">② 原创</span><span class="step-detail">重写 8 页文案</span><span class="ms">11.8s</span></div>
+        <div class="step"><span class="check">✓</span><span class="step-name">③ 渲染</span><span class="step-detail">1440×2400 · 8/8 页</span><span class="ms">24.5s</span></div>
+        <div class="step"><span class="check">✓</span><span class="step-name">④ vision 验证</span><span class="step-detail">实帧抽检 全绿</span><span class="ms">6.1s</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="label">Artifact</div>
+      <div class="artifact">
+        <div class="thumbs">
+          <div class="thumb">1</div><div class="thumb">2</div><div class="thumb">3</div>
+          <div class="thumb">4</div><div class="thumb">5</div><div class="thumb">6</div>
+          <div class="thumb">7</div><div class="thumb">8</div>
+        </div>
+        <div class="meta">图集 ready<br><span class="dim">1440×2400 · JPG ×8 · 可直接上传抖音</span></div>
+        <div class="badge">DONE</div>
+      </div>
+    </div>
+
+    <div class="verdict">✓ 完成 <span class="dim">— 从一句需求到可发布图集，无需人工介入</span></div>
+  </div>
+
+  <div class="statusbar">
+    <span><span class="live">6 skills loaded</span></span>
+    <span>MIT License</span>
+  </div>
+</body>
+</html>
